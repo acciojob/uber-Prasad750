@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 		Optional<Customer> optionalCustomer=customerRepository2.findById(customerId);
 		if (!optionalCustomer.isPresent())
 		{
-			throw  new Exception("Invalid customer Id");
+			return null;
 		}
 		Customer customer=optionalCustomer.get();
 		TripBooking tripBooking=new TripBooking();
@@ -78,6 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
 				TripBooking saveTripBookoing=tripBookingRepository2.save(tripBooking);
 				customerRepository2.save(customer);
 				driverRepository2.save(d);
+
 				return saveTripBookoing;
 
 			}
