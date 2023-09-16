@@ -15,6 +15,5 @@ public interface DriverRepository extends JpaRepository<Driver, Integer>{
     List<Driver> findAllByOrderByDriverIdAsc();
 
 
-    @Query(value="DELETE FROM Driver d WHERE d.driverId = :driverId")
-    void removeDriver( @Param("driverId") int driverId);
+
 }

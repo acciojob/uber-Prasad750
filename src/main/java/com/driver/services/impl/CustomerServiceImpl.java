@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 		TripBooking tripBooking=new TripBooking();
 
 
-		List<Driver> drivers=driverRepository2.findAllByOrderByDriverIdAsc();
+		List<Driver> drivers=driverRepository2.findAll();
 
 		boolean flag=false;
 
@@ -64,12 +64,21 @@ public class CustomerServiceImpl implements CustomerService {
 				tripBooking.setFromLocation(fromLocation);
 				tripBooking.setToLocation(toLocation);
 				tripBooking.setDistanceInKm(distanceInKm);
-				tripBooking.setBill(d.getCab().getPerKmRate()*distanceInKm);
+				tripBooking.setBill(0);
 				tripBooking.setCustomer(customer);
 				tripBooking.setDriver(d);
 				tripBooking.setStatus(TripStatus.CONFIRMED);
 				d.getCab().setAvailable(false);
-				return tripBookingRepository2.save(tripBooking);
+
+				List<TripBooking> tripBookings=d.getTripBookingList();
+				tripBookings.add(tripBooking);
+
+				List<TripBooking> tripBookingList =customer.getTripBookingList();
+				tripBookingList.add(tripBooking);
+				TripBooking saveTripBookoing=tripBookingRepository2.save(tripBooking);
+				customerRepository2.save(customer);
+				driverRepository2.save(d);
+				return saveTripBookoing;
 
 			}
 		}
@@ -87,7 +96,10 @@ public class CustomerServiceImpl implements CustomerService {
 		{
 			TripBooking tripBooking=optionalTripBooking.get();
 			tripBooking.setStatus(TripStatus.CANCELED);
+			tripBooking.setBill(0);
 			tripBooking.getDriver().getCab().setAvailable(true);
+
+			tripBookingRepository2.save(tripBooking);
 		}
 
 	}
@@ -100,7 +112,10 @@ public class CustomerServiceImpl implements CustomerService {
 		{
 			TripBooking tripBooking=optionalTripBooking.get();
 			tripBooking.setStatus(TripStatus.COMPLETED);
+			tripBooking.setBill(tripBooking.getDriver().getCab().getPerKmRate() * tripBooking.getDistanceInKm());
 			tripBooking.getDriver().getCab().setAvailable(true);
+
+			tripBookingRepository2.save(tripBooking);
 		}
 
 

@@ -42,7 +42,7 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public void removeDriver(int driverId){
 		// Delete driver without using deleteById function
-		driverRepository3.removeDriver(driverId);
+		driverRepository3.deleteById(driverId);
 
 	}
 
@@ -53,7 +53,7 @@ public class DriverServiceImpl implements DriverService {
 
 		if(optionalDriver.isPresent())
 		{
-			Driver driver=new Driver();
+			Driver driver=optionalDriver.get();
 			driver.getCab().setAvailable(false);
 			driverRepository3.save(driver);
 		}
