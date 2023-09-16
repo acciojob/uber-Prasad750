@@ -10,10 +10,10 @@ import javax.persistence.Id;
 public class Admin
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-   private int adminId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int adminId;
 
-   private String userName;
+    private String userName;
 
     private String password;
 
