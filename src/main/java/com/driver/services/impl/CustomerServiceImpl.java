@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (!optionalCustomer.isPresent())
 		{
-			throw  new Exception("No customer Available");
+			throw  new Exception("No cab available!");
 		}
 
 		Customer customer=optionalCustomer.get();
