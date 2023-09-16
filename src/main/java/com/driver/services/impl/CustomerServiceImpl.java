@@ -44,11 +44,13 @@ public class CustomerServiceImpl implements CustomerService {
 		//Avoid using SQL query
 
 		Optional<Customer> optionalCustomer=customerRepository2.findById(customerId);
-		Customer customer=null;
-		if (optionalCustomer.isPresent())
+
+		if (!optionalCustomer.isPresent())
 		{
-			customer=optionalCustomer.get();
+			throw  new Exception("No customer Available");
 		}
+
+		Customer customer=optionalCustomer.get();
 
 		Driver driver=null;
 		List<Driver> drivers=driverRepository2.findAll();
@@ -85,11 +87,11 @@ public class CustomerServiceImpl implements CustomerService {
 		List<TripBooking> tripBookingList =customer.getTripBookingList();
 		tripBookingList.add(tripBooking);
 
-		TripBooking saveTripBookoing=tripBookingRepository2.save(tripBooking);
+		TripBooking saveTripBooking=tripBookingRepository2.save(tripBooking);
 		customerRepository2.save(customer);
 		driverRepository2.save(driver);
 
-		return saveTripBookoing;
+		return saveTripBooking;
 
 
 
